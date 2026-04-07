@@ -81,7 +81,7 @@
             </li>
 
             <li class="group transition duration-300">
-              <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl tap-highlight-transparent text-red-600 dark:text-red-500 ">PRODUCT
+              <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl tap-highlight-transparent text-red-600 dark:text-red-500 ">LAUNCHING
                 <span class="hidden md:block h-0.5 bg-red-600 dark:bg-red-500 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
               </a>
             </li>
@@ -188,52 +188,18 @@
   Pre-order link will be unlocked once the countdown ends. Don’t miss your chance.
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto mb-16" 
-          x-data="{ 
-              products: [
-                  { id: 1, name: 'WORK EMOTION T5R', price: 'Chrome/Fluopink' },
-                  { id: 2, name: 'WORK EMOTION T7R', price: 'Chrome/White' },
-                  { id: 3, name: 'WORK EMOTION T7R', price: 'Chrome' },
-                  { id: 4, name: 'SSR PROFESSOR SP5', price: 'Chrome/White' },
-                  { id: 5, name: 'WEDS KRANZE LXZ', price: 'Chrome/White' },
-                  { id: 6, name: 'WORK EMOTION T5R', price: 'White' },
-                  { id: 7, name: 'KANSEI ASTRO', price: 'Purple Candy' },
-                  { id: 8, name: 'SSR PROFESSOR SP5', price: 'Chrome/SoftBrown' },
-                  { id: 9, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
-                  { id: 10, name: 'WORK MEISTER S1', price: 'Chrome/White' },
-                  { id: 11, name: 'DESMOND REGAMASTER', price: 'White' },
-                  { id: 12, name: 'WORK CR KIWAMI', price: 'White' },
-                  { id: 13, name: 'WORK MEISTER S1', price: 'Chrome' },
-                  { id: 14, name: 'WORK EMOTION T7R', price: 'Chrome/Lightpurple' },
-                  { id: 15, name: 'SSR PROFESSOR SP5', price: 'Chrome' },
-                  { id: 16, name: 'WORK EMOTION T7R', price: 'White' },
-                  { id: 17, name: 'WORK MEISTER S1', price: 'Chrome/Rosegold' },
-                  { id: 18, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
-                  { id: 19, name: 'WEDS KRANZE LXZ', price: 'White' },
-                  { id: 20, name: 'WORK MEISTER S1', price: 'Chrome/Softpink' },
-                  /* Tambahkan sampai 20 produk di sini */
-              ] 
-          }">
-        
-        <template x-for="product in products" :key="product.id">
-        <div class="flex flex-col group">
-          <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800 mb-3">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-2 max-w-5xl mx-auto mb-16">
+        <template x-for="i in 20" :key="i">
+          <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800">
             
-            <a :href="`src/image/launch/item (${product.id}).jpg`" data-fancybox="launch">
-              <img :src="`src/image/launch/item (${product.id}).jpg`" 
-                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
-                  :alt="product.name">
+            <a :href="`src/image/launch/item-${i}.jpg`" data-fancybox="launch">
+              <img :src="`src/image/launch/item-${i}.jpg`" 
+                  class="w-full h-full object-cover hover:scale-110 transition duration-700" 
+                  alt="New Drop Preview">
             </a>
 
           </div>
-
-          <div class="text-left font-signika">
-            <h3 class="text-sm md:text-base uppercase tracking-tight leading-tight mb-1" x-text="product.name"></h3>
-            <p class="text-gray-500 dark:text-neutral-400 text-sm" x-text="product.price"></p>
-          </div>
-        </div>
         </template>
-
       </div>
 
       <div x-data="countdownTimer()" x-init="init()" class="max-w-4xl mx-auto text-center border-t-2 border-b-2 border-black dark:border-white py-12">
@@ -248,7 +214,7 @@
 
         <div x-show="isFinished" x-transition.scale.duration.1000ms class="py-4">
           <h2 class="text-4xl font-bold mb-8 animate-pulse italic">DROP IS LIVE! 📦</h2>
-          <a href="https://www.instagram.com/qieysixtyfour" target="_blank" 
+          <a href="https://bit.ly/autobahngarage" target="_blank" 
              class="inline-block bg-black dark:bg-white text-white dark:text-black px-16 py-5 font-signika font-bold text-2xl hover:invert transition transform duration-300">
             SECURE YOUR ORDER
           </a>
@@ -287,7 +253,7 @@
     function countdownTimer() {
       return {
         // GANTI TANGGAL LAUNCH DI SINI
-        targetDate: new Date('2026-04-07T12:50:00').getTime(), 
+        targetDate: new Date('2026-04-07T11:26:00').getTime(), 
         days: '00', hours: '00', minutes: '00', seconds: '00',
         isFinished: false,
         init() {
