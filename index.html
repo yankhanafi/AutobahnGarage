@@ -37,6 +37,14 @@
   </script>
   <style>
     [x-cloak] { display: none !important; }
+    @keyframes pureFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  .animate-pure-fade {
+    animation: pureFade 1.5s ease-in-out forwards;
+  }
   </style>
 </head>
 
@@ -52,9 +60,12 @@
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex items-center justify-between">
         
-        <div class="transition-all duration-700 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
+        <div class="transition-all duration-700 z-[60]" 
+        :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.15] origin-top'">
         <a href="#" @click.prevent="tab = 'home'">
-        <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
+        <img src="src/logo2.svg" 
+         class="h-28 animate-pure-fade" 
+         alt="Autobahn Garage Logo" />
         </a>
         </div>
 
