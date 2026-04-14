@@ -60,7 +60,7 @@
 
 <body x-data="{ tab: 'home', scrolled: false }"
   x-init="scrolled = window.pageYOffset > 10"
-  @scroll.window="scrolled = window.pageYOffset > 10"
+  @scroll.window.passive="scrolled = (window.pageYOffset > 10)"
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
 
