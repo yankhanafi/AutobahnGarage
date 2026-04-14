@@ -37,6 +37,9 @@
   </script>
   <style>
     [x-cloak] { display: none !important; }
+    html {
+    overflow-y: scroll;
+  }
   </style>
 </head>
 
@@ -52,7 +55,7 @@
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex items-center justify-between">
         
-        <div class="transition-all duration-200 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
+        <div class="transition-all duration-230 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
         <a href="#" @click.prevent="tab = 'home'">
         <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
         </a>
@@ -62,9 +65,9 @@
           <button @click="open = !open"
             class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
             <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'opacity-0': open } "></span>
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'opacity-0': open } "></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
             </div>
           </button>
         </div>
