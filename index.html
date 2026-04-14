@@ -47,6 +47,16 @@
   @scroll.window="scrolled = (window.pageYOffset > 50) ? true : false"
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
+
+  <div x-data="{ loading: true }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 800) }" 
+     x-show="loading" 
+     x-transition:leave="transition ease-in duration-500"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+    <img src="src/logo2.svg" class="h-20 animate-pulse" alt="Loading...">
+</div>
   
 <header id="main-header" 
  class="fixed top-0 left-0 w-full z-50 transition-all duration-200 px-5 md:px-20"
