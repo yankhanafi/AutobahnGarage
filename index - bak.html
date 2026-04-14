@@ -14,7 +14,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Signika:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
   <script src="https://code.jquery.com/jquery-3.6.3.min.js"
@@ -27,8 +27,7 @@
         extend:
                 {
                   fontFamily: {
-                    'nothingyoucoulddo': ['Nothing You Could Do', 'cursive'],
-                    'signika': ['Signika', 'sans-serif'],
+                    'poppins': ['Poppins', 'sans-serif'],
                   },
                 },
       },
@@ -37,81 +36,114 @@
   </script>
   <style>
     [x-cloak] { display: none !important; }
+    html {
+    overflow-y: scroll;
+  }
+  #main-header, #main-header img {
+  will-change: transform, padding;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+/* Tambahkan ini di bagian <style> */
+  @media (max-width: 1024px) {
+    #main-header {
+      /* Kasih sedikit gradasi hitam permanen di atas agar logo gak 'ngambang' */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+    }
+    
+    /* Pas di-scroll, paksa background hitam muncul instan */
+    .header-scrolled {
+      background-color: rgba(0, 0, 0, 0.8) !important;
+      backdrop-filter: blur(12px) !important;
+      -webkit-backdrop-filter: blur(12px) !important;
+    }
+  }
   </style>
 </head>
 
-<body x-data="{ tab: 'home' }"
-  class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500">
+<body x-data="{ tab: 'home', scrolled: false }"
+  x-init="scrolled = window.pageYOffset > 50"
+  @scroll.window="scrolled = window.pageYOffset > 50"
+  :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
+  class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
+
+  <div x-data="{ loading: true }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 800) }" 
+     x-show="loading" 
+     x-transition:leave="transition ease-in duration-500"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+    <img src="src/logo2.svg" class="h-20 animate-pulse" alt="Loading...">
+</div>
   
-  <header class="flex w-full overflow-hidden pt-10 pb-1">
+<header id="main-header" 
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out px-5 md:px-20"
+  :class="scrolled ? 'bg-black/70 backdrop-blur-lg py-2 shadow-lg' : 'bg-transparent py-10'">
+    
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
-      <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
-        <div class="mr-4 md:mr-8">
+      <div class="container mx-auto flex items-center justify-between border-none outline-none">
+        
+        <div class="transition-all duration-300 z-[60] origin-left" 
+             :class="scrolled ? 'scale-75' : 'scale-[1.1] md:scale-[1.15]'">
           <a href="#" @click.prevent="tab = 'home'">
-            <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
+            <img src="src/logo2.svg" class="h-28 block object-contain" alt="Autobahn Garage Logo" />
           </a>
         </div>
-        <div class="ml-auto md:hidden flex items-center justify-start">
+
+        <div class="md:hidden flex items-center z-[60]">
           <button @click="open = !open"
-            class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
-            <span class="sr-only">Open main menu</span>
+            class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
             <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'opacity-0': open } "></span>
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'opacity-0': open } "></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
             </div>
           </button>
         </div>
-        <div id="menu"
-          :class="open ? 'h-auto' : 'h-0 md:h-auto'"
-          class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden md:overflow-visible">
-          <ul id="ulMenu"
-            class="flex flex-col duration-300 ease-out md:space-x-5 mt-3 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
+
+        <div id="menu" 
+            x-cloak
+            :class="open ? 'opacity-100 translate-y-0 visible h-screen bg-black/90 backdrop-blur-xl' : 'opacity-0 -translate-y-full invisible h-0 md:opacity-100 md:translate-y-0 md:visible md:h-auto md:bg-transparent'" 
+            class="fixed md:relative top-0 left-0 w-full transition-all duration-500 ease-in-out md:flex-grow md:flex md:items-center p-5 md:p-0 z-50 flex flex-col justify-center items-center md:flex-row md:justify-end">
             
-            <li class="group transition duration-300">
-              <a href="#" @click.prevent="tab = 'home'; open = false" class="font-signika text-2xl tap-highlight-transparent uppercase">FEATURED
-                <span class="hidden md:block h-0.5 bg-black dark:bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
-              </a>
-            </li>
+            <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-5 space-y-8 md:space-y-0 items-center md:ml-auto text-white">
+            
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'home'; open = false" class="font-poppins text-[22px] uppercase">FEATURED
+                    <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl tap-highlight-transparent text-red-600 dark:text-red-500 ">PRODUCT
-                <span class="hidden md:block h-0.5 bg-red-600 dark:bg-red-500 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
-              </a>
-            </li>
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-poppins text-[22px] text-red-600 uppercase">PRODUCT
+                    <span class="hidden md:block h-0.5 bg-red-600 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="https://bit.ly/autobahngarage" class="font-signika text-2xl tap-highlight-transparent">LOOKBOOK
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
+                <li class="group">
+                <a href="#" @click.prevent="tab = 'merch-coming-soon'; open = false" class="font-poppins text-[22px] uppercase">
+                  MERCHANDISE
+                  <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'merch-coming-soon' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                </a>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="https://www.instagram.com/autobahngarage" class="font-signika text-2xl tap-highlight-transparent">SOCIAL
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-
-            <li class="group transition duration-300">
-              <a href="#target-text" @click="tab = 'home'; open = false" class="font-signika text-2xl tap-highlight-transparent uppercase">CATALOG
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-          </ul>
+                <li class="group">
+                  <a href="https://bit.ly/autobahngarage" class="font-poppins text-[22px] uppercase">LOOKBOOK</a>
+                </li>
+                
+                <li class="group">
+                  <a href="https://www.instagram.com/autobahngarage" class="font-poppins text-[22px] uppercase">SOCIAL</a>
+                </li>
+            </ul>
         </div>
       </div>
     </nav>
-  </header>
+</header>
 
   <main x-show="tab === 'home'" x-transition.opacity.duration.500ms>
     <div class="container mx-auto">
-      <h1 class="text-4xl pt-10 pb-8 font-bold">FEATURED</h1>
+      <h1 class="text-4xl pt-20 pb-8 font-poppins font-bold">FEATURED</h1>
       <section class="text-neutral-700">
         <div class="container w-full">
           <div class="flex flex-wrap w-full">
@@ -146,7 +178,7 @@
 
     <div class="container mx-auto">
       <p id="target-text"></p>
-      <h1 class="text-4xl pt-10 pb-8 font-bold">PRODUCT</h1>
+      <h1 class="text-4xl pt-20 pb-8 font-poppins font-bold">PRODUCT</h1>
       <section class="text-neutral-700">
         <div class="container w-full">
           <div class="flex flex-wrap w-full">
@@ -181,10 +213,10 @@
   </main>
 
   <main x-show="tab === 'launching'" x-transition.opacity.duration.500ms x-cloak>
-    <section class="container mx-auto py-10">
+    <section class="container mx-auto py-20">
       <div class="text-center mb-10">
-        <h1 class="text-5xl font-signika">UPCOMING DROP</h1>
-        <p class="text-gray-500 dark:text-white-10 mt-2 font-signika"><b>Limited Small Batch Release with @qieysixtyfour</b><br>
+        <h1 class="text-5xl font-poppins font-normal">UPCOMING DROP</h1>
+        <p class="text-gray-500 dark:text-white-10 mt-2 font-poppins"><b>Limited Small Batch Release with @qieysixtyfour</b><br>
   Order link will be unlocked once the countdown ends. Don’t miss your chance.
       </div>
 
@@ -257,6 +289,38 @@
     </section>
   </main>
 
+  <main x-show="tab === 'merch-coming-soon'" 
+      x-transition:enter="transition opacity ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition opacity ease-in duration-0"
+      x-cloak
+      class="fixed inset-0 z-40 bg-black overflow-hidden m-0 p-0">
+      
+  <div class="absolute inset-0 w-full h-full">
+    <img src="src/image/comingsoon.jpg" 
+         alt="Coming Soon" 
+         class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 bg-black/50"></div>
+  </div>
+
+  <div class="relative h-screen w-full flex flex-col items-center justify-center text-center px-4">
+    <h2 class="text-3xl md:text-5xl font-signika tracking-[0.1em] uppercase text-white drop-shadow-2xl">
+      Coming soon
+    </h2>
+    
+    <div class="mt-6 flex gap-4 text-white/80 font-signika text-xs md:text-sm tracking-[0.1em] uppercase">
+      <span>Apparel</span>
+      <span>•</span>
+      <span>Stickers</span>
+      <span>•</span>
+      <span>Accessories</span>
+    </div>
+  </div>
+</main>
+
+  
+  
   <footer>
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
