@@ -46,6 +46,11 @@
   .animate-fast-fade {
     animation: fastFade 0.6s ease-out forwards;
   }
+  #main-header {
+    transition: background-color 0.15s ease-in-out, 
+                backdrop-filter 0.15s ease-in-out, 
+                padding 0.2s ease-in-out;
+  }
   </style>
 </head>
 
@@ -54,9 +59,9 @@
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
   
-<header id="main-header" 
- class="fixed top-0 left-0 w-full z-50 transition-all duration-500 px-5 md:px-20"
-  :class="scrolled ? 'bg-black/70 backdrop-blur-lg py-2 shadow-lg' : 'bg-transparent py-10'">
+<header id="main-header"
+  :class="scrolled ? 'bg-black/80 backdrop-blur-lg py-2 shadow-2xl' : 'bg-transparent py-4'"
+  class="fixed top-0 left-0 right-0 z-50">
     
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex items-center justify-between">
