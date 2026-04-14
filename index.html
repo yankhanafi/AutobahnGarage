@@ -44,12 +44,12 @@
 </head>
 
 <body x-data="{ tab: 'home', scrolled: false }"
-  @scroll.window="scrolled = (window.pageYOffset > 10) ? true : false"
+  @scroll.window="scrolled = (window.pageYOffset > 50) ? true : false"
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
 
   <div x-data="{ loading: true }" 
-     x-init="window.onload = () => { setTimeout(() => loading = false, 1000) }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 800) }" 
      x-show="loading" 
      x-transition:leave="transition ease-in duration-500"
      x-transition:leave-start="opacity-100"
@@ -65,7 +65,7 @@
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex items-center justify-between">
         
-       <div class="transition-all duration-200 z-[60] origin-left" :class="scrolled ? 'scale-75' : 'scale-[1.1] md:scale-[1.15]'">
+        <div class="transition-all duration-230 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
         <a href="#" @click.prevent="tab = 'home'">
         <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
         </a>
