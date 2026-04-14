@@ -40,78 +40,81 @@
   </style>
 </head>
 
-<body x-data="{ tab: 'home' }"
-  class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500">
+<body x-data="{ tab: 'home', scrolled: false }"
+  @scroll.window="scrolled = (window.pageYOffset > 50) ? true : false"
+  class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition duration-500 pt-32">
   
-  <header class="flex w-full overflow-hidden pt-10 pb-1">
+<header id="main-header" 
+ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 px-5 md:px-20"
+  :class="scrolled ? 'bg-black/70 backdrop-blur-lg py-2 shadow-lg' : 'bg-transparent py-10'">
+    
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
-      <div class="container mx-auto flex flex-wrap items-center md:flex-no-wrap">
-        <div class="mr-4 md:mr-8">
-          <a href="#" @click.prevent="tab = 'home'">
-            <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
-          </a>
+      <div class="container mx-auto flex items-center justify-between">
+        
+        <div class="transition-all duration-700 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
+        <a href="#" @click.prevent="tab = 'home'">
+        <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
+        </a>
         </div>
-        <div class="ml-auto md:hidden flex items-center justify-start">
+
+        <div class="md:hidden flex items-center z-[60]">
           <button @click="open = !open"
-            class="tap-highlight-transparent text-black dark:text-white w-5 h-5 relative focus:outline-none">
-            <span class="sr-only">Open main menu</span>
+            class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
             <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'opacity-0': open } "></span>
-              <span aria-hidden="true"
-                class="block absolute h-0.5 w-5 bg-current transform transition duration-500 ease-in-out"
-                :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'opacity-0': open } "></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
             </div>
           </button>
         </div>
-        <div id="menu"
-          :class="open ? 'h-auto' : 'h-0 md:h-auto'"
-          class="w-full transition-all ease-out duration-500 md:transition-none md:w-auto md:flex-grow md:flex md:items-center overflow-hidden md:overflow-visible">
-          <ul id="ulMenu"
-            class="flex flex-col duration-300 ease-out md:space-x-5 mt-3 md:flex-row md:items-center md:ml-auto md:mt-0 md:pt-0 md:border-0">
+
+        <div id="menu" 
+            x-cloak
+            :class="open ? 'opacity-100 translate-y-0 visible h-screen bg-black/90 backdrop-blur-xl' : 'opacity-0 -translate-y-full invisible h-0 md:opacity-100 md:translate-y-0 md:visible md:h-auto md:bg-transparent'" 
+            class="fixed md:relative top-0 left-0 w-full transition-all duration-500 ease-in-out md:flex-grow md:flex md:items-center p-5 md:p-0 z-50 flex flex-col justify-center items-center md:flex-row md:justify-end">
             
-            <li class="group transition duration-300">
-              <a href="#" @click.prevent="tab = 'home'; open = false" class="font-signika text-2xl tap-highlight-transparent uppercase">FEATURED
-                <span class="hidden md:block h-0.5 bg-black dark:bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
-              </a>
-            </li>
+            <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-5 space-y-8 md:space-y-0 items-center md:ml-auto text-white">
+            
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'home'; open = false" class="font-signika text-2xl uppercase">FEATURED
+                    <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl tap-highlight-transparent text-red-600 dark:text-red-500 ">LAUNCHING
-                <span class="hidden md:block h-0.5 bg-red-600 dark:bg-red-500 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
-              </a>
-            </li>
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl text-red-600 uppercase">PRODUCT
+                    <span class="hidden md:block h-0.5 bg-red-600 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="https://bit.ly/autobahngarage" class="font-signika text-2xl tap-highlight-transparent">LOOKBOOK
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
+                <li class="relative group" x-data="{ openMerch: false }" @click.away="openMerch = false">
+                  <a href="#" @click.prevent="openMerch = !openMerch" class="font-signika text-2xl uppercase flex items-center gap-1">
+                    MERCHANDISE
+                    <svg class="w-4 h-4 transition-transform" :class="openMerch ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                  </a>
+                  <div x-show="openMerch" x-transition x-cloak class="md:absolute relative mt-2 w-full md:w-48 py-2 bg-black/80 backdrop-blur-md shadow-lg rounded-lg z-[60] border border-white/10">
+                    <a href="#" @click.prevent="tab = 'merch-apparel'; open = false; openMerch = false" class="block px-4 py-2 text-sm uppercase text-white hover:bg-white/10">APPAREL</a>
+                    <a href="#" @click.prevent="tab = 'merch-stickers'; open = false; openMerch = false" class="block px-4 py-2 text-sm uppercase text-white hover:bg-white/10">STICKERS</a>
+                    <a href="#" @click.prevent="tab = 'merch-accessories'; open = false; openMerch = false" class="block px-4 py-2 text-sm uppercase text-white hover:bg-white/10">ACCESSORIES</a>
+                  </div>
+                </li>
 
-            <li class="group transition duration-300">
-              <a href="https://www.facebook.com/profile.php?id=61567458185973" class="font-signika text-2xl tap-highlight-transparent">SOCIAL
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-
-            <li class="group transition duration-300">
-              <a href="#target-text" @click="tab = 'home'; open = false" class="font-signika text-2xl tap-highlight-transparent uppercase">CATALOG
-                <span class="hidden md:block max-w-0 group-hover:max-w-full transition-all duration-500 h-0.5 bg-black dark:bg-white"></span>
-              </a>
-            </li>
-          </ul>
+                <li class="group">
+                  <a href="https://bit.ly/autobahngarage" class="font-signika text-2xl uppercase">LOOKBOOK</a>
+                </li>
+                
+                <li class="group">
+                  <a href="https://www.instagram.com/autobahngarage" class="font-signika text-2xl uppercase">SOCIAL</a>
+                </li>
+            </ul>
         </div>
       </div>
     </nav>
-  </header>
+</header>
 
   <main x-show="tab === 'home'" x-transition.opacity.duration.500ms>
     <div class="container mx-auto">
-      <h1 class="text-4xl pt-10 pb-8 font-bold">FEATURED</h1>
+      <h1 class="text-4xl pt-20 pb-8 font-bold">FEATURED</h1>
       <section class="text-neutral-700">
         <div class="container w-full">
           <div class="flex flex-wrap w-full">
@@ -146,7 +149,7 @@
 
     <div class="container mx-auto">
       <p id="target-text"></p>
-      <h1 class="text-4xl pt-10 pb-8 font-bold">PRODUCT</h1>
+      <h1 class="text-4xl pt-20 pb-8 font-bold">PRODUCT</h1>
       <section class="text-neutral-700">
         <div class="container w-full">
           <div class="flex flex-wrap w-full">
@@ -181,25 +184,59 @@
   </main>
 
   <main x-show="tab === 'launching'" x-transition.opacity.duration.500ms x-cloak>
-    <section class="container mx-auto py-10">
+    <section class="container mx-auto py-20">
       <div class="text-center mb-10">
         <h1 class="text-5xl font-signika">UPCOMING DROP</h1>
-        <p class="text-gray-500 dark:text-white-10 mt-2 font-signika"><b>Limited Batch Release with @qieysixtyfour</b><br>
-  Pre-order link will be unlocked once the countdown ends. Don’t miss your chance.
+        <p class="text-gray-500 dark:text-white-10 mt-2 font-signika"><b>Limited Small Batch Release with @qieysixtyfour</b><br>
+  Order link will be unlocked once the countdown ends. Don’t miss your chance.
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-2 max-w-5xl mx-auto mb-16">
-        <template x-for="i in 20" :key="i">
-          <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800">
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto mb-16" 
+          x-data="{ 
+              products: [
+                  { id: 1, name: 'WORK EMOTION T5R', price: 'Chrome/Fluopink' },
+                  { id: 2, name: 'WORK EMOTION T7R', price: 'Chrome/White' },
+                  { id: 3, name: 'WORK EMOTION T7R', price: 'Chrome' },
+                  { id: 4, name: 'SSR PROFESSOR SP5', price: 'Chrome/White' },
+                  { id: 5, name: 'WEDS KRANZE LXZ', price: 'Chrome/White' },
+                  { id: 6, name: 'WORK EMOTION T5R', price: 'White' },
+                  { id: 7, name: 'KANSEI ASTRO', price: 'Purple Candy' },
+                  { id: 8, name: 'SSR PROFESSOR SP5', price: 'Chrome/SoftBrown' },
+                  { id: 9, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
+                  { id: 10, name: 'WORK MEISTER S1', price: 'Chrome/White' },
+                  { id: 11, name: 'DESMOND REGAMASTER', price: 'White' },
+                  { id: 12, name: 'WORK CR KIWAMI', price: 'White' },
+                  { id: 13, name: 'WORK MEISTER S1', price: 'Chrome' },
+                  { id: 14, name: 'WORK EMOTION T7R', price: 'Chrome/Lightpurple' },
+                  { id: 15, name: 'SSR PROFESSOR SP5', price: 'Chrome' },
+                  { id: 16, name: 'WORK EMOTION T7R', price: 'White' },
+                  { id: 17, name: 'WORK MEISTER S1', price: 'Chrome/Rosegold' },
+                  { id: 18, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
+                  { id: 19, name: 'WEDS KRANZE LXZ', price: 'White' },
+                  { id: 20, name: 'WORK MEISTER S1', price: 'Chrome/Softpink' },
+                  /* Tambahkan sampai 20 produk di sini */
+              ] 
+          }">
+        
+        <template x-for="product in products" :key="product.id">
+        <div class="flex flex-col group">
+          <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800 mb-3">
             
-            <a :href="`src/image/launch/item-${i}.jpg`" data-fancybox="launch">
-              <img :src="`src/image/launch/item-${i}.jpg`" 
-                  class="w-full h-full object-cover hover:scale-110 transition duration-700" 
-                  alt="New Drop Preview">
+            <a :href="`src/image/launch/item (${product.id}).jpg`" data-fancybox="launch">
+              <img :src="`src/image/launch/item (${product.id}).jpg`" 
+                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
+                  :alt="product.name">
             </a>
 
           </div>
+
+          <div class="text-left font-signika">
+            <h3 class="text-sm md:text-base uppercase tracking-tight leading-tight mb-1" x-text="product.name"></h3>
+            <p class="text-gray-500 dark:text-neutral-400 text-sm" x-text="product.price"></p>
+          </div>
+        </div>
         </template>
+
       </div>
 
       <div x-data="countdownTimer()" x-init="init()" class="max-w-4xl mx-auto text-center border-t-2 border-b-2 border-black dark:border-white py-12">
@@ -214,7 +251,7 @@
 
         <div x-show="isFinished" x-transition.scale.duration.1000ms class="py-4">
           <h2 class="text-4xl font-bold mb-8 animate-pulse italic">DROP IS LIVE! 📦</h2>
-          <a href="https://bit.ly/autobahngarage" target="_blank" 
+          <a href="https://www.instagram.com/qieysixtyfour" target="_blank" 
              class="inline-block bg-black dark:bg-white text-white dark:text-black px-16 py-5 font-signika font-bold text-2xl hover:invert transition transform duration-300">
             SECURE YOUR ORDER
           </a>
@@ -223,6 +260,77 @@
     </section>
   </main>
 
+  <main x-show="tab === 'merch-apparel'" x-transition.opacity.duration.500ms x-cloak 
+        x-data="{ photos: [1, 2, 3, 4, 5, 6] }">
+    <div class="container mx-auto px-4">
+      <h1 class="text-4xl pt-20 pb-8 font-normal uppercase font-signika">Apparel</h1>
+      
+      <section>
+        <div class="flex flex-wrap -m-1">
+          <template x-for="n in photos" :key="n">
+            <div :class="n === 3 || n === 4 ? 'w-full md:w-1/2 p-1' : 'w-1/2 md:w-1/4 p-1'">
+              <div class="overflow-hidden h-64 md:h-80 w-full bg-neutral-100 dark:bg-neutral-900">
+                <a :href="`src/image/merch/apparel${n}.jpg`" data-fancybox="apparel">
+                  <img :alt="`Apparel ${n}`" 
+                      class="block h-full w-full object-cover object-center animate-fade-in transition duration-500 transform scale-100 hover:scale-110" 
+                      :src="`src/image/merch/apparel${n}.jpg`" />
+                </a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <main x-show="tab === 'merch-stickers'" x-transition.opacity.duration.500ms x-cloak 
+      x-data="{ photos: [1, 2, 3, 4, 5, 6] }">
+  <div class="container mx-auto px-4">
+    <h1 class="text-4xl pt-20 pb-8 font-normal uppercase font-signika">Stickers</h1>
+    
+      <section>
+        <div class="flex flex-wrap -m-1">
+          <template x-for="n in photos" :key="n">
+            <div :class="n === 3 || n === 4 ? 'w-full md:w-1/2 p-1' : 'w-1/2 md:w-1/4 p-1'">
+              <div class="overflow-hidden h-64 md:h-80 w-full bg-neutral-100 dark:bg-neutral-900">
+                <a :href="`src/image/merch/sticker${n}.jpg`" data-fancybox="stickers">
+                  <img :alt="`Sticker ${n}`" 
+                      class="block h-full w-full object-cover object-center animate-fade-in transition duration-500 transform scale-100 hover:scale-110" 
+                      :src="`src/image/merch/sticker${n}.jpg`" />
+                </a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+  </main>
+
+    <main x-show="tab === 'merch-accessories'" x-transition.opacity.duration.500ms x-cloak 
+      x-data="{ photos: [1, 2, 3, 4, 5, 6] }">
+  <div class="container mx-auto px-4">
+    <h1 class="text-4xl pt-20 pb-8 font-normal uppercase font-signika">Accessories</h1>
+    
+      <section>
+        <div class="flex flex-wrap -m-1">
+          <template x-for="n in photos" :key="n">
+            <div :class="n === 3 || n === 4 ? 'w-full md:w-1/2 p-1' : 'w-1/2 md:w-1/4 p-1'">
+              <div class="overflow-hidden h-64 md:h-80 w-full bg-neutral-100 dark:bg-neutral-900">
+                <a :href="`src/image/merch/accessories${n}.jpg`" data-fancybox="accessories">
+                  <img :alt="`Sticker ${n}`" 
+                      class="block h-full w-full object-cover object-center animate-fade-in transition duration-500 transform scale-100 hover:scale-110" 
+                      :src="`src/image/merch/accessories${n}.jpg`" />
+                </a>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  
+  
   <footer>
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
@@ -253,7 +361,7 @@
     function countdownTimer() {
       return {
         // GANTI TANGGAL LAUNCH DI SINI
-        targetDate: new Date('2026-04-07T11:26:00').getTime(), 
+        targetDate: new Date('2026-04-15T12:00:00').getTime(), 
         days: '00', hours: '00', minutes: '00', seconds: '00',
         isFinished: false,
         init() {
