@@ -37,9 +37,6 @@
   </script>
   <style>
     [x-cloak] { display: none !important; }
-    html {
-    overflow-y: scroll;
-  }
   </style>
 </head>
 
@@ -47,25 +44,15 @@
   @scroll.window="scrolled = (window.pageYOffset > 50) ? true : false"
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
-
-  <div x-data="{ loading: true }" 
-     x-init="window.onload = () => { setTimeout(() => loading = false, 800) }" 
-     x-show="loading" 
-     x-transition:leave="transition ease-in duration-500"
-     x-transition:leave-start="opacity-100"
-     x-transition:leave-end="opacity-0"
-     class="fixed inset-0 z-[100] bg-black flex items-center justify-center">
-    <img src="src/logo2.svg" class="h-20 animate-pulse" alt="Loading...">
-</div>
   
 <header id="main-header" 
- class="fixed top-0 left-0 w-full z-50 transition-all duration-200 px-5 md:px-20"
+ class="fixed top-0 left-0 w-full z-50 transition-all duration-500 px-5 md:px-20"
   :class="scrolled ? 'bg-black/70 backdrop-blur-lg py-2 shadow-lg' : 'bg-transparent py-10'">
     
     <nav id="nav" x-data="{ open: false }" role="navigation" class="w-full">
       <div class="container mx-auto flex items-center justify-between">
         
-        <div class="transition-all duration-230 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
+        <div class="transition-all duration-700 z-[60]" :class="scrolled ? 'scale-75 origin-left' : 'scale-[1.1] md:scale-[1.15] origin-top'">
         <a href="#" @click.prevent="tab = 'home'">
         <img src="src/logo2.svg" class="h-28" alt="Autobahn Garage Logo" />
         </a>
@@ -75,9 +62,9 @@
           <button @click="open = !open"
             class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
             <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'opacity-0': open } "></span>
-              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'opacity-0': open } "></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-500" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
             </div>
           </button>
         </div>
