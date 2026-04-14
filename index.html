@@ -48,12 +48,13 @@
 </head>
 
 <body x-data="{ tab: 'home', scrolled: false }"
-  @scroll.window="scrolled = (window.pageYOffset > 50) ? true : false"
+  x-init="scrolled = window.pageYOffset > 50"
+  @scroll.window="scrolled = window.pageYOffset > 50"
   :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
 
   <div x-data="{ loading: true }" 
-     x-init="window.onload = () => { setTimeout(() => loading = false, 800) }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 500) }" 
      x-show="loading" 
      x-transition:leave="transition ease-in duration-500"
      x-transition:leave-start="opacity-100"
