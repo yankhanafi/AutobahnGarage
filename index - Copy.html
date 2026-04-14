@@ -39,6 +39,32 @@
     html {
     overflow-y: scroll;
   }
+
+  /* Kunci tinggi container agar tidak jumping */
+  .img-container {
+    background-color: #111; /* bg-neutral-900 */
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3; /* Sesuaikan dengan rata-rata foto kamu */
+  }
+
+  /* Optimasi Logo agar tidak melayang */
+  #main-header {
+    will-change: background-color, padding, backdrop-filter;
+    transition: all 0.2s ease-out;
+  }
+
+  /* Hilangkan animasi bawaan yang bikin berat di awal */
+  .no-transition {
+    transition: none !important;
+  }
+
+  /* Mencegah logo shifting dengan mengunci origin */
+  .logo-container {
+    transform-origin: left center;
+    will-change: transform;
+  }
+
   #main-header, #main-header img {
   will-change: transform, padding;
   -webkit-backface-visibility: hidden;
