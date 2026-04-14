@@ -54,7 +54,7 @@
   class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
 
   <div x-data="{ loading: true }" 
-     x-init="window.onload = () => { setTimeout(() => loading = false, 500) }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 200) }" 
      x-show="loading" 
      x-transition:leave="transition ease-in duration-500"
      x-transition:leave-start="opacity-100"
@@ -96,30 +96,30 @@
             <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-5 space-y-8 md:space-y-0 items-center md:ml-auto text-white">
             
                 <li class="group">
-                  <a href="#" @click.prevent="tab = 'home'; open = false" class="font-signika text-2xl uppercase">FEATURED
+                  <a href="#" @click.prevent="tab = 'home'; open = false" class="font-signika text-[20px] uppercase">FEATURED
                     <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
                   </a>
                 </li>
 
                 <li class="group">
-                  <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-2xl text-red-600 uppercase">PRODUCT
+                  <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-signika text-[20px] text-red-600 uppercase">PRODUCT
                     <span class="hidden md:block h-0.5 bg-red-600 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
                   </a>
                 </li>
 
                 <li class="group">
-                <a href="#" @click.prevent="tab = 'merch-coming-soon'; open = false" class="font-signika text-2xl uppercase">
+                <a href="#" @click.prevent="tab = 'merch-coming-soon'; open = false" class="font-signika text-[20px] uppercase">
                   MERCHANDISE
                   <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'merch-coming-soon' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
                 </a>
                 </li>
 
                 <li class="group">
-                  <a href="https://bit.ly/autobahngarage" class="font-signika text-2xl uppercase">LOOKBOOK</a>
+                  <a href="https://bit.ly/autobahngarage" class="font-signika text-[20px] uppercase">LOOKBOOK</a>
                 </li>
                 
                 <li class="group">
-                  <a href="https://www.instagram.com/autobahngarage" class="font-signika text-2xl uppercase">SOCIAL</a>
+                  <a href="https://www.instagram.com/autobahngarage" class="font-signika text-[20px] uppercase">SOCIAL</a>
                 </li>
             </ul>
         </div>
