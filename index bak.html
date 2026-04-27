@@ -219,52 +219,55 @@
       </div>
 
       <div class="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto mb-16" 
-          x-data="{ 
-              products: [
-                  { id: 1, name: 'WORK EMOTION T5R', price: 'Chrome/Fluopink' },
-                  { id: 2, name: 'WORK EMOTION T7R', price: 'Chrome/White' },
-                  { id: 3, name: 'WORK EMOTION T7R', price: 'Chrome' },
-                  { id: 4, name: 'SSR PROFESSOR SP5', price: 'Chrome/White' },
-                  { id: 5, name: 'WEDS KRANZE LXZ', price: 'Chrome/White' },
-                  { id: 6, name: 'WORK EMOTION T5R', price: 'White' },
-                  { id: 7, name: 'KANSEI ASTRO', price: 'Purple Candy' },
-                  { id: 8, name: 'SSR PROFESSOR SP5', price: 'Chrome/SoftBrown' },
-                  { id: 9, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
-                  { id: 10, name: 'WORK MEISTER S1', price: 'Chrome/White' },
-                  { id: 11, name: 'DESMOND REGAMASTER', price: 'White' },
-                  { id: 12, name: 'WORK CR KIWAMI', price: 'White' },
-                  { id: 13, name: 'WORK MEISTER S1', price: 'Chrome' },
-                  { id: 14, name: 'WORK EMOTION T7R', price: 'Chrome/Lightpurple' },
-                  { id: 15, name: 'SSR PROFESSOR SP5', price: 'Chrome' },
-                  { id: 16, name: 'WORK EMOTION T7R', price: 'White' },
-                  { id: 17, name: 'WORK MEISTER S1', price: 'Chrome/Rosegold' },
-                  { id: 18, name: 'WORK EMOTION T5R', price: 'Chrome/White' },
-                  { id: 19, name: 'WEDS KRANZE LXZ', price: 'White' },
-                  { id: 20, name: 'WORK MEISTER S1', price: 'Chrome/Softpink' },
-                  /* Tambahkan sampai 20 produk di sini */
-              ] 
-          }">
+     x-data="{ 
+         products: [],
+         loading: true,
+         async init() {
+             try {
+                 // GANTI URL DI BAWAH DENGAN URL DARI GOOGLE APPS SCRIPT TADI
+                 const response = await fetch('https://script.google.com/macros/s/AKfycbxXXAbPk-gB5IOKS6icEP5iUYuRedqalk1Y-BaSBwAsRqwrN4KkQ0MpF2cfgIfG5IXJ/exec');
+                 this.products = await response.json();
+             } finally {
+                 this.loading = false;
+             }
+         }
+     }">
+  
+  <template x-if="loading">
+      <div class="col-span-full text-center py-10">
+          <p class="animate-pulse">Fetching latest stock data...</p>
+      </div>
+  </template>
+
+  <template x-for="product in products" :key="product.id">
+    <div class="flex flex-col group" :class="product.stock <= 0 ? 'opacity-40 grayscale' : ''">
+      <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800 mb-3 relative">
         
-        <template x-for="product in products" :key="product.id">
-        <div class="flex flex-col group">
-          <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800 mb-3">
-            
-            <a :href="`src/image/launch/item (${product.id}).jpg`" data-fancybox="launch">
-              <img :src="`src/image/launch/item (${product.id}).jpg`" 
-                  class="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
-                  :alt="product.name">
-            </a>
-
+        <template x-if="product.stock <= 0">
+          <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/40">
+            <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-widest">Sold Out</span>
           </div>
-
-          <div class="text-left font-signika">
-            <h3 class="text-sm md:text-base uppercase tracking-tight leading-tight mb-1" x-text="product.name"></h3>
-            <p class="text-gray-500 dark:text-neutral-400 text-sm" x-text="product.price"></p>
-          </div>
-        </div>
         </template>
 
+        <a :href="`src/image/launch/item (${product.id}).jpg`" data-fancybox="launch">
+          <img :src="`src/image/launch/item (${product.id}).jpg`" 
+               class="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
+               :alt="product.name_rims">
+        </a>
       </div>
+
+      <div class="text-left font-signika">
+        <h3 class="text-sm md:text-base uppercase tracking-tight leading-tight mb-1" x-text="product.name_rims"></h3>
+        <p class="text-gray-500 dark:text-neutral-400 text-xs mb-1" x-text="product.color"></p>
+        
+        <p class="text-[9px] font-bold uppercase tracking-tighter"
+          :class="product.stock > 0 ? 'text-green-500' : 'text-red-600'"
+          x-text="product.stock > 0 ? 'AVAILABLE' : 'OUT OF STOCK'">
+        </p>
+      </div>
+    </div>
+  </template>
+</div>
 
       <div x-data="countdownTimer()" x-init="init()" class="max-w-4xl mx-auto text-center border-t-2 border-b-2 border-black dark:border-white py-12">
         <div x-show="!isFinished" class="space-y-8">
