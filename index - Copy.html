@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta name="google-site-verification" content="p2flcFaQssP9v2ePKZ-JM-3fM0l2iaIB6WIKOk0N7iw" />
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autobahn Garage - 1/64 Scaleparts & Accessories</title>
+  <meta name="description"
+    content="The Caretaker, Modelers, & Makers of 1/64 Scaleparts. #scalewheels4everyone">
+  <link rel="icon" type="image/x-icon" href="dist/assets/favicon.ico" />
+  <link rel="stylesheet" href="dist/output.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+  <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+    integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      content: ["./dist/*.{html,js}"],
+      theme: {
+        extend:
+                {
+                  fontFamily: {
+                    'poppins': ['Poppins', 'sans-serif'],
+                  },
+                },
+      },
+      plugins: [],
+    }
+  </script>
+  <style>
+    [x-cloak] { display: none !important; }
+    html {
+    overflow-y: scroll;
+  }
+
+  /* Safety net agar logo tidak terlihat melayang saat di-scroll cepat */
+@media (max-width: 1024px) {
+  #main-header {
+    /* Gradasi tipis yang permanen menjaga area di belakang logo */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0) 100%);
+    transition: background-color 0.15s ease-out;
+  }
+}
+
+/* Gunakan hardware acceleration agar animasi tidak jitter */
+#main-header, .logo-container {
+  will-change: transform, background-color;
+  transform: translateZ(0);
+}
+
+  </style>
+</head>
+
+<body x-data="{ tab: 'home', scrolled: false }"
+  x-init="scrolled = window.pageYOffset > 10"
+  @scroll.window.passive="scrolled = (window.pageYOffset > 10)"
+  :class="tab === 'merch-coming-soon' ? 'overflow-hidden' : 'pt-32'"
+  class="dark:bg-black bg-white min-h-screen text-black dark:text-white px-5 md:px-20 opacity-0 animate-fade-in transition-all duration-500">
+
+  <div x-data="{ loading: true }" 
+     x-init="window.onload = () => { setTimeout(() => loading = false, 1000) }" 
+     x-show="loading" 
+     x-transition:leave="transition ease-in duration-500"
+     x-transition:leave-start="opacity-100"
+     x-transition:leave-end="opacity-0"
+     class="fixed inset-0 z-[100] bg-black flex items-center justify-center">
+    <img src="src/logo2.svg" class="h-20 animate-pulse" alt="Loading...">
+</div>
+  
+<header id="main-header" 
+  class="fixed top-0 left-0 w-full z-50 transition-all duration-150 ease-out px-5 md:px-20 flex items-center min-h-[80px]"
+  :class="scrolled ? 'bg-black/50 backdrop-blur-lg py-2 shadow-lg' : 'bg-transparent py-10'">
+    
+    <nav id="nav" x-data="{ open: false }" class="w-full">
+      <div class="container mx-auto flex items-center justify-between">
+        
+        <div class="logo-container transition-transform duration-150 ease-out z-[60] origin-left" 
+             :class="scrolled ? 'scale-75' : 'scale-100 md:scale-110'">
+          <a href="#" @click.prevent="tab = 'home'">
+            <img src="src/logo2.svg" class="h-28 block object-contain" alt="Autobahn Garage Logo" />
+          </a>
+        </div>
+
+        <div class="md:hidden flex items-center z-[60]">
+          <button @click="open = !open"
+            class="tap-highlight-transparent text-white w-5 h-5 relative focus:outline-none">
+            <div class="block w-5 absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'rotate-45': open,' -translate-y-1.5': !open }"></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'opacity-0': open } "></span>
+              <span class="block absolute h-0.5 w-5 bg-current transform transition duration-300" :class="{'-rotate-45': open, ' translate-y-1.5': !open}"></span>
+            </div>
+          </button>
+        </div>
+
+        <div id="menu" 
+            x-cloak
+            :class="open ? 'opacity-100 translate-y-0 visible h-screen bg-black/90 backdrop-blur-xl' : 'opacity-0 -translate-y-full invisible h-0 md:opacity-100 md:translate-y-0 md:visible md:h-auto md:bg-transparent'" 
+            class="fixed md:relative top-0 left-0 w-full transition-all duration-500 ease-in-out md:flex-grow md:flex md:items-center p-5 md:p-0 z-50 flex flex-col justify-center items-center md:flex-row md:justify-end">
+            
+            <ul id="ulMenu" class="flex flex-col md:flex-row md:space-x-5 space-y-8 md:space-y-0 items-center md:ml-auto text-white">
+            
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'home'; open = false" class="font-poppins text-[22px] uppercase">FEATURED
+                    <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'home' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
+
+                <li class="group">
+                  <a href="#" @click.prevent="tab = 'launching'; open = false" class="font-poppins text-[22px] text-pink-600 uppercase">PRODUCT
+                    <span class="hidden md:block h-0.5 bg-pink-600 transition-all duration-500" :class="tab === 'launching' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                  </a>
+                </li>
+
+                <li class="group">
+                <a href="#" @click.prevent="tab = 'merch-coming-soon'; open = false" class="font-poppins text-[22px] uppercase">
+                  MERCHANDISE
+                  <span class="hidden md:block h-0.5 bg-white transition-all duration-500" :class="tab === 'merch-coming-soon' ? 'max-w-full' : 'max-w-0 group-hover:max-w-full'"></span>
+                </a>
+                </li>
+
+                <li class="group">
+                  <a href="#community-section" @click="tab = 'home'; open = false" data-fancybox-ignore
+                    class="font-poppins text-[22px] uppercase">
+                    COMMUNITY
+                    <span class="hidden md:block h-0.5 bg-white transition-all duration-500 max-w-0 group-hover:max-w-full"></span>
+                  </a>
+                </li>
+                
+                <li class="group">
+                  <a href="https://www.instagram.com/autobahngarage" class="font-poppins text-[22px] uppercase">SOCIAL</a>
+                </li>
+            </ul>
+        </div>
+      </div>
+    </nav>
+</header>
+
+  <main x-show="tab === 'home'" x-transition.opacity.duration.500ms>
+    <div class="container mx-auto">
+      <h1 class="text-4xl pt-20 pb-8 font-poppins font-bold">FEATURED</h1>
+      <section class="text-neutral-700">
+        <div class="container w-full">
+          <div class="flex flex-wrap w-full">
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P2.jpg" data-fancybox="gallery"><img alt="Tarmac Vertex Silvia S13 with Work VS-XV" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P2.jpg" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P3.jpg" data-fancybox="gallery"><img alt="TLVN Cefiro with Advan GT" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P3.jpg" /></a></div></div>
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P4.jpg" data-fancybox="gallery"><img alt="Tarmac Vertex Silvia S13" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P4.jpg" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P1.jpg" data-fancybox="gallery"><img alt="Tarmac Vertex Silvia S13" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P1.jpg" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P6.jpg" data-fancybox="gallery"><img alt="TLVN ER33 Sedan" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P6.jpg" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P5.jpg" data-fancybox="gallery"><img alt="Tarmac Hilux" class="block h-full w-full object-cover object-center opacity-0 animate-fade-in transition duration-500 transform scale-100 hover:scale-110" src="src/image/CAR/P5.jpg" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P8.jpg" data-fancybox="gallery"><img src="src/image/CAR/P8.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P9.jpg" data-fancybox="gallery"><img src="src/image/CAR/P9.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P19.jpg" data-fancybox="gallery"><img src="src/image/CAR/P19.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P10.jpg" data-fancybox="gallery"><img src="src/image/CAR/P10.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P12.jpg" data-fancybox="gallery"><img src="src/image/CAR/P12.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P22.jpg" data-fancybox="gallery"><img src="src/image/CAR/P22.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P21.jpg" data-fancybox="gallery"><img src="src/image/CAR/P21.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P23.jpg" data-fancybox="gallery"><img src="src/image/CAR/P23.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P20.jpg" data-fancybox="gallery"><img src="src/image/CAR/P20.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/CAR/P24.jpg" data-fancybox="gallery"><img src="src/image/CAR/P24.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section id="community-section" class="pt-24 pb-12 bg-black border-y border-neutral-900 scroll-mt-[120px]">
+      <div class="container mx-auto px-4">
+    
+        <div class="flex flex-col items-center mb-10 md:mb-14">
+          <a href="#" class="group/logo cursor-default" data-fancybox-ignore>
+            <img src="src/fitment-matters.svg"
+              class="h-20 md:h-24 w-auto object-contain mb-6 transition-all duration-500 filter grayscale brightness-90 group-hover/logo:grayscale-0 group-hover/logo:brightness-125 group-hover/logo:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+              alt="Fitment Matters Logo">
+          </a>
+    
+          <div class="flex items-center justify-center w-full gap-3 md:gap-4 px-4">
+            <div class="h-[1px] flex-1 md:flex-none md:w-12 bg-neutral-800"></div>
+            <p
+              class="text-gray-400 font-poppins text-[10px] md:text-[11px] font-medium tracking-[0.1em] md:tracking-[0.4em] uppercase text-center whitespace-nowrap">
+              Curated Community Setups & Collaborations
+            </p>
+            <div class="h-[1px] flex-1 md:flex-none md:w-12 bg-neutral-800"></div>
+          </div>
+        </div>
+    
+        <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto px-2">
+        </div>
+    
+        <div class="text-center mt-12">
+          <a href="https://www.instagram.com/autobahngarage" target="_blank"
+            class="group relative inline-block text-[10px] font-bold tracking-[0.5em] uppercase text-white/40 hover:text-white transition-all duration-500">
+            View more setups on Instagram
+            <span
+              class="absolute bottom-[-8px] left-0 w-0 h-[1px] bg-white transition-all duration-500 group-hover:w-full"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <div class="container mx-auto">
+      <p id="target-text"></p>
+      <h1 class="text-4xl pt-20 pb-8 font-poppins font-bold">PRODUCT</h1>
+      <section class="text-neutral-700">
+        <div class="container w-full">
+          <div class="flex flex-wrap w-full">
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A1.jpg" data-fancybox="gallery"><img src="src/image/A1.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A2.jpg" data-fancybox="gallery"><img src="src/image/A2.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A3.jpg" data-fancybox="gallery"><img src="src/image/A3.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A4.jpg" data-fancybox="gallery"><img src="src/image/A4.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A5.jpg" data-fancybox="gallery"><img src="src/image/A5.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A6.jpg" data-fancybox="gallery"><img src="src/image/A6.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A7.jpg" data-fancybox="gallery"><img src="src/image/A7.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A8.jpg" data-fancybox="gallery"><img src="src/image/A8.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A9.jpg" data-fancybox="gallery"><img src="src/image/A9.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A10.jpg" data-fancybox="gallery"><img src="src/image/A10.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A11.jpg" data-fancybox="gallery"><img src="src/image/A11.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A12.jpg" data-fancybox="gallery"><img src="src/image/A12.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A13.jpg" data-fancybox="gallery"><img src="src/image/A13.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+            <div class="flex w-full md:w-1/2 flex-wrap">
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A14.jpg" data-fancybox="gallery"><img src="src/image/A14.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full md:w-1/2 p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A15.jpg" data-fancybox="gallery"><img src="src/image/A15.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+              <div class="w-full p-1"><div class="overflow-hidden h-full w-full"><a href="src/image/A16.jpg" data-fancybox="gallery"><img src="src/image/A16.jpg" class="block h-full w-full object-cover opacity-0 animate-fade-in transition duration-500 hover:scale-110" /></a></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <main x-show="tab === 'launching'" x-transition.opacity.duration.500ms x-cloak>
+    <section class="container mx-auto py-20">
+      <div class="text-center mb-16 md:mb-24">
+        <h1 class="text-4xl md:text-5xl font-poppins font-normal uppercase tracking-tight text-white">UPCOMING DROP</h1>
+        <p class="text-gray-400 mt-3 font-poppins text-base md:text-base max-w-2xl mx-auto leading-relaxed">
+          <b>Limited Small Batch Release with @qieysixtyfour</b><br>
+          Order link will be unlocked once the countdown ends. Don’t miss your chance.
+        </p>
+  
+        <div
+          class="flex items-center justify-center mt-14 md:mt-16 mb-12 md:mb-20 gap-6 md:gap-8 group/distro transition-all duration-500">
+        
+          <p
+            class="text-white font-poppins italic text-[13px] md:text-[15px] lowercase tracking-tight opacity-70 group-hover/distro:opacity-100 transition-all duration-500">
+            authorized distributor
+          </p>
+        
+          <a href="https://www.instagram.com/qieysixtyfour" target="_blank"
+            class="inline-block transition-all duration-500 filter brightness-90 group-hover/distro:brightness-125 group-hover/distro:scale-110 group-hover/distro:drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]">
+            <img src="src/image/dist-white.svg" class="h-11 md:h-[58px] w-auto object-contain" alt="Qieysixtyfour Logo">
+          </a>
+        </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-6 max-w-5xl mx-auto mb-16" 
+     x-data="{ 
+         products: [],
+         loading: true,
+         async init() {
+             try {
+                 // GANTI URL DI BAWAH DENGAN URL DARI GOOGLE APPS SCRIPT TADI
+                 const response = await fetch('https://script.google.com/macros/s/AKfycbxXXAbPk-gB5IOKS6icEP5iUYuRedqalk1Y-BaSBwAsRqwrN4KkQ0MpF2cfgIfG5IXJ/exec');
+                 this.products = await response.json();
+             } finally {
+                 this.loading = false;
+             }
+         }
+     }">
+  
+  <template x-if="loading">
+    <div class="col-span-full flex flex-col items-center justify-center py-20">
+      <div class="w-48 h-[2px] bg-gray-800 relative overflow-hidden mb-4">
+        <div class="absolute inset-0 bg-white shadow-[0_0_15px_#fff] animate-[scan_1.5s_ease-in-out_infinite]"></div>
+      </div>
+      <p class="text-[13px] uppercase tracking-[0.3em] text-gray-500 italic">
+        Syncing Live Inventory...
+      </p>
+    </div>
+  </template>
+  
+  <style>
+    @keyframes scan {
+      0% {
+        transform: translateX(-100%);
+      }
+  
+      100% {
+        transform: translateX(100%);
+      }
+    }
+  </style>
+
+  <template x-for="product in products" :key="product.id">
+    <div class="flex flex-col group" :class="product.stock <= 0 ? 'opacity-40 grayscale' : ''">
+      <div class="aspect-square bg-neutral-100 dark:bg-neutral-900 overflow-hidden border border-neutral-200 dark:border-neutral-800 mb-3 relative">
+        
+        <template x-if="product.stock <= 0">
+          <div class="absolute inset-0 flex items-center justify-center z-10 bg-black/40">
+            <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-1 uppercase tracking-widest">Sold Out</span>
+          </div>
+        </template>
+
+        <a :href="`src/image/launch/item (${product.id}).jpg`" data-fancybox="launch">
+          <img :src="`src/image/launch/item (${product.id}).jpg`" 
+               class="w-full h-full object-cover group-hover:scale-110 transition duration-700" 
+               :alt="product.name_rims">
+        </a>
+      </div>
+
+      <div class="text-left font-poppins">
+        <h3 class="text-12pt md:text-base uppercase tracking-tight leading-tight mb-0.5 text-white"
+          x-text="product.name"></h3>
+      
+        <p class="text-gray-500 dark:text-neutral-400 text-xs mb-1.5" x-text="product.color"></p>
+      
+        <p class="text-[9px] font-bold uppercase tracking-tighter"
+          :class="product.stock <= 0 ? 'text-red-600' : (product.stock <= 3 ? 'text-orange-500' : 'text-green-500')">
+          <span x-text="product.stock <= 0 ? 'OUT OF STOCK' : (product.stock <= 3 ? 'LOW STOCK' : 'AVAILABLE')"></span>
+        </p>
+      </div>
+    </div>
+  </template>
+</div>
+
+      <div x-data="countdownTimer()" x-init="init()" class="max-w-4xl mx-auto text-center border-t-2 border-b-2 border-black dark:border-white py-12">
+        <div x-show="!isFinished" class="space-y-8">
+          <div class="flex justify-center space-x-6 md:space-x-14 font-signika text-5xl md:text-8xl">
+            <div><span x-text="days">00</span><p class="text-[10px] tracking-[0.3em] font-normal uppercase mt-3 opacity-60">Days</p></div>
+            <div><span x-text="hours">00</span><p class="text-[10px] tracking-[0.3em] font-normal uppercase mt-3 opacity-60">Hours</p></div>
+            <div><span x-text="minutes">00</span><p class="text-[10px] tracking-[0.3em] font-normal uppercase mt-3 opacity-60">Mins</p></div>
+            <div><span x-text="seconds">00</span><p class="text-[10px] tracking-[0.3em] font-normal uppercase mt-3 opacity-60">Secs</p></div>
+          </div>
+        </div>
+
+        <div x-show="isFinished" x-transition.scale.duration.1000ms class="py-4">
+          <h2 class="text-4xl font-bold mb-8 animate-pulse italic">DROP IS LIVE! 📦</h2>
+          <a href="https://www.instagram.com/qieysixtyfour" target="_blank" 
+             class="inline-block bg-black dark:bg-white text-white dark:text-black px-16 py-5 font-signika font-bold text-2xl hover:invert transition transform duration-300">
+            SECURE YOUR ORDER
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main x-show="tab === 'merch-coming-soon'" 
+      x-transition:enter="transition opacity ease-out duration-300"
+      x-transition:enter-start="opacity-0"
+      x-transition:enter-end="opacity-100"
+      x-transition:leave="transition opacity ease-in duration-0"
+      x-cloak
+      class="fixed inset-0 z-40 bg-black overflow-hidden m-0 p-0">
+      
+  <div class="absolute inset-0 w-full h-full">
+    <img src="src/image/comingsoon.jpg" 
+         alt="Coming Soon" 
+         class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 bg-black/50"></div>
+  </div>
+
+  <div class="relative h-screen w-full flex flex-col items-center justify-center text-center px-4">
+    <h2 class="text-3xl md:text-5xl font-signika tracking-[0.1em] uppercase text-white drop-shadow-2xl">
+      Coming soon
+    </h2>
+    
+    <div class="mt-6 flex gap-4 text-white/80 font-signika text-xs md:text-sm tracking-[0.1em] uppercase">
+      <span>Apparel</span>
+      <span>•</span>
+      <span>Stickers</span>
+      <span>•</span>
+      <span>Accessories</span>
+    </div>
+  </div>
+</main>
+
+  
+  
+  <footer>
+    <div class="max-w-screen-xl py-16 mx-auto">
+      <div class="grid grid-cols-1 gap-8 text-center mx-auto">
+        <div>
+          <p class="font-signika"><b>Autobahn Garage | 64 Scaleparts & Accessories | #scalewheels4everyone</b></p>
+          <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
+            Proudly made in Indonesia<br />Samarinda, East Borneo - 🇮🇩
+          </p>
+          <div class="flex mx-auto mt-8 justify-center space-x-6 text-gray-600 dark:text-gray-300">
+            <a class="transition duration-300 hover:opacity-75" href="https://www.facebook.com/profile.php?id=61567458185973" target="_blank">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/></svg>
+            </a>
+            <a class="transition duration-300 hover:opacity-75" href="https://www.instagram.com/autobahngarage" target="_blank">
+              <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <p class="mt-8 text-xs text-gray-600 dark:text-gray-300 text-center">
+        © 2026 <a href="https://instagram.com/autobahngarage" class="underline">Autobahn Garage</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    Fancybox.bind("[data-fancybox]", {});
+
+    function countdownTimer() {
+      return {
+        // GANTI TANGGAL LAUNCH DI SINI
+        targetDate: new Date('2026-04-15T12:00:00').getTime(), 
+        days: '00', hours: '00', minutes: '00', seconds: '00',
+        isFinished: false,
+        init() {
+          let timer = setInterval(() => {
+            let now = new Date().getTime();
+            let distance = this.targetDate - now;
+            if (distance < 0) {
+              clearInterval(timer);
+              this.isFinished = true;
+              return;
+            }
+            this.days = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
+            this.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            this.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            this.seconds = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+          }, 1000);
+        }
+      }
+    }
+
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const gridContainer = document.getElementById('gallery-grid');
+        const maxPhotosToSearch = 50; // Batas scan folder (f1-f50)
+        const limitDisplay = 12;      // Batas foto yang ditampilkan di web
+        let availablePhotos = [];
+
+        // Fungsi cek keberadaan file (WebP atau JPG)
+        function checkImageExists(num) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => {
+                    const imgJpg = new Image();
+                    imgJpg.onload = () => resolve(true);
+                    imgJpg.onerror = () => resolve(false);
+                    imgJpg.src = `src/image/gallery/f${num}.jpg`;
+                };
+                img.src = `src/image/gallery/f${num}.webp`;
+            });
+        }
+
+        async function initGallery() {
+            const checks = [];
+            for (let i = 1; i <= maxPhotosToSearch; i++) {
+                checks.push(checkImageExists(i).then(exists => {
+                    if (exists) availablePhotos.push(i);
+                }));
+            }
+
+            await Promise.all(checks);
+
+            // 1. Acak semua foto yang ditemukan
+            availablePhotos.sort(() => Math.random() - 0.5);
+
+            // 2. POTONG (Limit) jadi hanya 12 foto saja
+            const selectedPhotos = availablePhotos.slice(0, limitDisplay);
+
+            // 3. Render ke HTML
+            let galleryHTML = '';
+            selectedPhotos.forEach(num => {
+                galleryHTML += `
+                    <div class="group relative aspect-square overflow-hidden bg-neutral-950 border border-neutral-900">
+                        <img src="src/image/gallery/f${num}.webp" 
+                             onerror="this.src='src/image/gallery/f${num}.jpg'; this.onerror=null;"
+                             loading="lazy"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-110"
+                             alt="Autobahn Scale Build">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+                            <p class="text-[9px] text-white tracking-widest uppercase font-medium">
+                                <span class="text-white/50 text-[10px]"></span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            gridContainer.innerHTML = galleryHTML;
+        }
+
+        initGallery();
+    });
+
+  </script>
+  <script src="dist/fade_in.js"></script>
+  <script src="dist/menu.js"></script>
+</body>
+</html>
