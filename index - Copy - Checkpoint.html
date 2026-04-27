@@ -127,7 +127,11 @@
                 </li>
 
                 <li class="group">
-                  <a href="https://bit.ly/autobahngarage" class="font-poppins text-[22px] uppercase">LOOKBOOK</a>
+                  <a href="#community-section" @click="tab = 'home'; open = false" data-fancybox-ignore
+                    class="font-poppins text-[22px] uppercase">
+                    COMMUNITY
+                    <span class="hidden md:block h-0.5 bg-white transition-all duration-500 max-w-0 group-hover:max-w-full"></span>
+                  </a>
                 </li>
                 
                 <li class="group">
@@ -174,6 +178,40 @@
       </section>
     </div>
 
+    <section id="community-section" class="pt-24 pb-12 bg-black border-y border-neutral-900 scroll-mt-[120px]">
+      <div class="container mx-auto px-4">
+    
+        <div class="flex flex-col items-center mb-10 md:mb-14">
+          <a href="#" class="group/logo cursor-default" data-fancybox-ignore>
+            <img src="src/fitment-matters.svg"
+              class="h-20 md:h-24 w-auto object-contain mb-6 transition-all duration-500 filter grayscale brightness-90 group-hover/logo:grayscale-0 group-hover/logo:brightness-125 group-hover/logo:drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+              alt="Fitment Matters Logo">
+          </a>
+    
+          <div class="flex items-center justify-center w-full gap-3 md:gap-4 px-4">
+            <div class="h-[1px] flex-1 md:flex-none md:w-12 bg-neutral-800"></div>
+            <p
+              class="text-gray-400 font-poppins text-[10px] md:text-[11px] font-medium tracking-[0.1em] md:tracking-[0.4em] uppercase text-center whitespace-nowrap">
+              Curated Community Setups & Collaborations
+            </p>
+            <div class="h-[1px] flex-1 md:flex-none md:w-12 bg-neutral-800"></div>
+          </div>
+        </div>
+    
+        <div id="gallery-grid" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-6xl mx-auto px-2">
+        </div>
+    
+        <div class="text-center mt-12">
+          <a href="https://www.instagram.com/autobahngarage" target="_blank"
+            class="group relative inline-block text-[10px] font-bold tracking-[0.5em] uppercase text-white/40 hover:text-white transition-all duration-500">
+            View more setups on Instagram
+            <span
+              class="absolute bottom-[-8px] left-0 w-0 h-[1px] bg-white transition-all duration-500 group-hover:w-full"></span>
+          </a>
+        </div>
+      </div>
+    </section>
+    
     <div class="container mx-auto">
       <p id="target-text"></p>
       <h1 class="text-4xl pt-20 pb-8 font-poppins font-bold">PRODUCT</h1>
@@ -256,13 +294,15 @@
         </a>
       </div>
 
-      <div class="text-left font-signika">
-        <h3 class="text-sm md:text-base uppercase tracking-tight leading-tight mb-1" x-text="product.name_rims"></h3>
-        <p class="text-gray-500 dark:text-neutral-400 text-xs mb-1" x-text="product.color"></p>
-        
+      <div class="text-left font-poppins">
+        <h3 class="text-12pt md:text-base uppercase tracking-tight leading-tight mb-0.5 text-white"
+          x-text="product.name"></h3>
+      
+        <p class="text-gray-500 dark:text-neutral-400 text-xs mb-1.5" x-text="product.color"></p>
+      
         <p class="text-[9px] font-bold uppercase tracking-tighter"
-          :class="product.stock > 0 ? 'text-green-500' : 'text-red-600'"
-          x-text="product.stock > 0 ? 'AVAILABLE' : 'OUT OF STOCK'">
+          :class="product.stock <= 0 ? 'text-red-600' : (product.stock <= 3 ? 'text-orange-500' : 'text-green-500')">
+          <span x-text="product.stock <= 0 ? 'OUT OF STOCK' : (product.stock <= 3 ? 'LOW STOCK' : 'AVAILABLE')"></span>
         </p>
       </div>
     </div>
@@ -326,7 +366,7 @@
     <div class="max-w-screen-xl py-16 mx-auto">
       <div class="grid grid-cols-1 gap-8 text-center mx-auto">
         <div>
-          <p class="font-signika"><b>Autobahn Garage | 1/64 Scaleparts & Accessories | #scalewheels4everyone</b></p>
+          <p class="font-signika"><b>Autobahn Garage | 64 Scaleparts & Accessories | #scalewheels4everyone</b></p>
           <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">
             Proudly made in Indonesia<br />Samarinda, East Borneo - 🇮🇩
           </p>
@@ -372,6 +412,71 @@
         }
       }
     }
+
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const gridContainer = document.getElementById('gallery-grid');
+        const maxPhotosToSearch = 50; // Batas scan folder (f1-f50)
+        const limitDisplay = 12;      // Batas foto yang ditampilkan di web
+        let availablePhotos = [];
+
+        // Fungsi cek keberadaan file (WebP atau JPG)
+        function checkImageExists(num) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => {
+                    const imgJpg = new Image();
+                    imgJpg.onload = () => resolve(true);
+                    imgJpg.onerror = () => resolve(false);
+                    imgJpg.src = `src/image/gallery/f${num}.jpg`;
+                };
+                img.src = `src/image/gallery/f${num}.webp`;
+            });
+        }
+
+        async function initGallery() {
+            const checks = [];
+            for (let i = 1; i <= maxPhotosToSearch; i++) {
+                checks.push(checkImageExists(i).then(exists => {
+                    if (exists) availablePhotos.push(i);
+                }));
+            }
+
+            await Promise.all(checks);
+
+            // 1. Acak semua foto yang ditemukan
+            availablePhotos.sort(() => Math.random() - 0.5);
+
+            // 2. POTONG (Limit) jadi hanya 12 foto saja
+            const selectedPhotos = availablePhotos.slice(0, limitDisplay);
+
+            // 3. Render ke HTML
+            let galleryHTML = '';
+            selectedPhotos.forEach(num => {
+                galleryHTML += `
+                    <div class="group relative aspect-square overflow-hidden bg-neutral-950 border border-neutral-900">
+                        <img src="src/image/gallery/f${num}.webp" 
+                             onerror="this.src='src/image/gallery/f${num}.jpg'; this.onerror=null;"
+                             loading="lazy"
+                             class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000 scale-100 group-hover:scale-110"
+                             alt="Autobahn Scale Build">
+                        
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4">
+                            <p class="text-[9px] text-white tracking-widest uppercase font-medium">
+                                <span class="text-white/50 text-[10px]"></span>
+                            </p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            gridContainer.innerHTML = galleryHTML;
+        }
+
+        initGallery();
+    });
+
   </script>
   <script src="dist/fade_in.js"></script>
   <script src="dist/menu.js"></script>
